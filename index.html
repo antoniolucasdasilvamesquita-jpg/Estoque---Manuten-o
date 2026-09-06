@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" href="./favicon.png">
+<meta name="theme-color" content="#2f7d32">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0b4658">
 <link rel="manifest" href="manifest.json">
-<title>Controle Operacional V72</title>
+<title>Controle Operacional</title>
 <style>
 :root{--bg:#e8edeb;--card:#fff;--text:#10252a;--muted:#66757a;--line:#dfe7e4;--blue:#0f766e;--green:#178a3b;--yellow:#b7791f;--red:#c92a2a}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
@@ -1006,7 +1009,18 @@ function generateMonthlyPDF(month){
    const rows=archive.records.slice().sort((a,b)=>new Date(a.date)-new Date(b.date));
    const w=window.open('','_blank');
    if(!w)return alert('O navegador bloqueou a janela do PDF. Permita pop-ups e tente novamente.');
-   w.document.write(`<html><head><title>Histórico ${esc(monthLabel(month))}</title><style>body{font-family:Arial;padding:24px;color:#10252a}h1{font-size:20px}p{color:#667}table{width:100%;border-collapse:collapse;margin-top:18px}th,td{border:1px solid #ddd;padding:7px;text-align:left;font-size:11px}th{background:#f3f5f4}@media print{button{display:none}}</style></head><body><h1>Relatório mensal — Histórico</h1><p>${esc(window.currentCompanyName||'Empresa')} · ${esc(monthLabel(month))} · ${rows.length} movimentação(ões)</p><table><thead><tr><th>Data</th><th>Material</th><th>Tipo</th><th>Qtd.</th><th>Responsável</th></tr></thead><tbody>${rows.map(h=>`<tr><td>${new Date(h.date).toLocaleString('pt-BR')}</td><td>${esc(h.material)}</td><td>${esc(typeLabel(h.type))}</td><td>${h.qty}</td><td>${esc(h.person||'—')}</td></tr>`).join('')}</tbody></table><script>window.onload=()=>window.print()<\/script></body></html>`);
+   w.document.write(`<html><head>
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" href="./favicon.png">
+<meta name="theme-color" content="#2f7d32"><title>Histórico ${esc(monthLabel(month))}</title><style>body{font-family:Arial;padding:24px;color:#10252a}h1{font-size:20px}p{color:#667}table{width:100%;border-collapse:collapse;margin-top:18px}th,td{border:1px solid #ddd;padding:7px;text-align:left;font-size:11px}th{background:#f3f5f4}@media print{button{display:none}}</style></head><body><h1>Relatório mensal — Histórico</h1><p>${esc(window.currentCompanyName||'Empresa')} · ${esc(monthLabel(month))} · ${rows.length} movimentação(ões)</p><table><thead><tr><th>Data</th><th>Material</th><th>Tipo</th><th>Qtd.</th><th>Responsável</th></tr></thead><tbody>${rows.map(h=>`<tr><td>${new Date(h.date).toLocaleString('pt-BR')}</td><td>${esc(h.material)}</td><td>${esc(typeLabel(h.type))}</td><td>${h.qty}</td><td>${esc(h.person||'—')}</td></tr>`).join('')}</tbody></table><script>window.onload=()=>window.print()<\/script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('./service-worker.js').catch(function(err){ console.warn('PWA service worker:', err); });
+  });
+}
+</script>
+</body></html>`);
    w.document.close();
  });
 }
@@ -1899,5 +1913,13 @@ if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(
 })();
 </script>
 
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('./service-worker.js').catch(function(err){ console.warn('PWA service worker:', err); });
+  });
+}
+</script>
 </body>
 </html>
