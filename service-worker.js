@@ -1,5 +1,5 @@
-const CACHE_NAME = 'controle-operacional-pwa-v1';
-const APP_SHELL = ['./', './index.html', './manifest.json', './favicon.png', './icons/icon-192.png', './icons/icon-512.png'];
+const CACHE_NAME = 'controle-operacional-pwa-v2';
+const APP_SHELL = ['./', './index.html', './manifest.json', './favicon.png', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)).then(() => self.skipWaiting()));
 });
